@@ -1,1 +1,2 @@
-require "knu/base"
+require "knu/knu"
+require "knu/version"
