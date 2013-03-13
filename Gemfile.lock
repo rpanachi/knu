@@ -4,7 +4,6 @@ PATH
     knu (0.0.1)
       crack
       httpi
-      nokogiri
       rack
 
 GEM
