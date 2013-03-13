@@ -66,13 +66,16 @@ class Knu
   end
 
   def request(xml)
-    request = HTTPI::Request.new(WEBSERVICE_URL)
-    request.body = xml
-    request.open_timeout = 10 # sec
-    request.read_timeout = 30 # sec
-    request.auth.ssl.verify_mode = :none
+    uri = URI.parse(WEBSERVICE_URL)
 
-    response = HTTPI.post(request)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = true
+    http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+    request = Net::HTTP::Post.new(uri.request_uri)
+    request.body = xml
+
+    response = http.request(request)
     handle_response(response.body)
   end
 

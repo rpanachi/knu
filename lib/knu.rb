@@ -1,5 +1,5 @@
 require "knu/knu"
 require "knu/version"
 
-require "httpi"
+require "net/http"
 require "crack"

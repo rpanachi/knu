@@ -6,7 +6,7 @@ require "knu/version"
 Gem::Specification.new do |gem|
   gem.name          = "knu"
   gem.version       = Knu::VERSION
-  gem.date          = "2012-03-12"
+  gem.date          = "2012-03-13"
   gem.summary       = "Client Knu Webservice"
   gem.description   = "Client Knu Webservice"
   gem.authors       = ["Rodrigo Panachi"]
@@ -20,7 +20,6 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
 
   gem.add_runtime_dependency "rack"
-  gem.add_runtime_dependency "httpi"
   gem.add_runtime_dependency "crack"
 
   gem.add_development_dependency "rake"
