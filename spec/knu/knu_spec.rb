@@ -92,11 +92,30 @@ describe Knu do
         end
         it "error category 1" do
           data = Crack::XML.parse(invalid_response)
-          expect { subject.validate_data!(data) }.to raise_error
+          expect { subject.validate_data!(data) }.to raise_error(Knu::InvalidRequest)
         end
         it "error category 2" do
           data = Crack::XML.parse(invalid_response_content)
-          expect { subject.validate_data!(data) }.to raise_error
+          expect { subject.validate_data!(data) }.to raise_error(Knu::InvalidQuery)
+        end
+        it "unknow error" do
+          data = {"invalid" => "response"}
+          expect { subject.validate_data!(data) }.to raise_error(RuntimeError)
+        end
+
+        it "InvalidResquest contains code and message" do
+          data = Crack::XML.parse(invalid_response)
+          expect { subject.validate_data!(data) }.to raise_error { |ex|
+            ex.code.should == "55"
+            ex.message.should == "Xml inválido"
+          }
+        end
+        it "InvalidQuery contains code and message" do
+          data = Crack::XML.parse(invalid_response_content)
+          expect { subject.validate_data!(data) }.to raise_error { |ex|
+            ex.code.should == "6"
+            ex.message.should == "Erro codigo 6: Parametro invalido."
+          }
         end
       end
 

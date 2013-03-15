@@ -2,6 +2,16 @@
 
 class Knu
 
+  class InvalidRequest < Exception
+    attr_reader :code
+    def initialize(code, message)
+      @code = code
+      super(message)
+    end
+  end
+
+  class InvalidQuery < InvalidRequest; end
+
   WEBSERVICE_URL = "https://c.knu.com.br/webservice"
   RETURN_FORMATS = {:json => 2, :xml => 1}
   STATUS_OK      = "0"
@@ -82,17 +92,18 @@ class Knu
   def handle_response(response)
     data = parse_response(response)
     validate_data!(data)
+
     data["dados"]["consulta"]["root"]
   end
 
   def validate_data!(data)
     dados = data["dados"]
     unless (status = dados["status"]) == STATUS_OK
-      raise "Error #{status}: " + dados["desc"]
+      raise InvalidRequest.new(status, dados["desc"])
     else
       root = dados["consulta"]["root"]
       if error = root["cod_erro"]
-        raise "Error #{error}: " + root["desc_erro"]
+        raise InvalidQuery.new(error, root["desc_erro"])
       end
     end
   rescue => ex
